@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxh.dao.TeacherDao">
+
+  <select id="queryTeacher" resultType="Teacher" parameterType="Integer">
+  		select teacherid,teachername,teachersex from teacher where teacherid = #{teacherId}
+  </select>
+  
+  <select id="queryMyCourseCount" resultType="Integer" parameterType="Integer">
+  		select count(*) from course where teacherid = #{teacherId}
+  </select>
+  
+  <select id="queryMyCourses" resultType="course" parameterType="PageTeacherBusiness">
+  		select * from course where teacherid = #{teacherId} limit #{startIndex},#{limit}
+  </select>
+  
+  <select id="queryMarksCount" resultType="Integer" parameterType="Integer">
+  		select count(*) from selectedcourse where courseid = #{courseId}
+  </select>
+  
+  <select id="queryMarks" resultType="studentBusiness" parameterType="Integer">
+  		select b.studentid,b.studentname,a.mark from selectedcourse a 
+  			inner join student b on a.studentid = b.studentid 
+  				where a.courseid = #{courseId} order by b.studentid
+  </select>
+  
+  <update id="updateMarks" parameterType="selectedCourse">
+  		update selectedcourse set mark = #{mark} where courseid = #{courseId} and
+  			studentid = #{studentId}
+  </update>
+  
+  <select id="checkTeacherPassword" resultType="String" parameterType="Integer">
+  		select loginpassword from teacherlogin where loginid = #{loginId}
+  </select>
+  
+  <update id="updateTeacherPassword" parameterType="teacherLogin">
+  		update teacherlogin set loginpassword = #{loginPassword} where loginid = #{loginId}
+  </update>
+  
+</mapper>

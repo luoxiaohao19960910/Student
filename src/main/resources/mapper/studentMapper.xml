@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxh.dao.StudentDao">
+
+  <select id="queryStudent" resultType="student" parameterType="Integer">
+  		select studentid,studentname,studentsex from student where studentid = #{studentId}
+  </select>
+  
+  <select id="queryCourseCount" resultType="Integer" parameterType="Integer">
+  		select count(*) from course where courseid not in (select courseid from selectedcourse where studentid = #{studentId})
+  </select>
+  
+  <select id="queryAllCourses" resultType="course" parameterType="pageStudentBusiness">
+  		select * from course where courseid not in (select courseid from selectedcourse where studentid = #{studentId})
+  			limit #{startIndex},#{limit}
+  </select>
+  
+  <insert id="addCourse" parameterType="selectedCourse">
+  		insert into selectedcourse values(#{courseId},#{studentId},#{mark})
+  </insert>
+  
+  <select id="querySelectedCourseCount" resultType="Integer" parameterType="Integer">
+  		select count(*) from course where courseid = #{studentId}
+  </select>
+  
+  <select id="querySelectedCourses" resultType="course" parameterType="Integer">
+  		select * from course where courseid  in (select courseid from selectedcourse where studentid = #{studentId})
+  </select>
+  
+  <delete id="deleteCourse" parameterType="selectedCourse">
+		delete from selectedcourse where courseid = #{courseId} and studentid = #{studentId}  
+  </delete>
+  
+  <select id="selectedCourseCount" resultType="Integer" parameterType="Integer">
+  		select count(*) from selectedcourse t1 inner join course t2 
+  			on t1.courseid = t2.courseid where studentid = #{studentId} 
+  				and mark is not null
+  </select>
+  
+  <select id="finishedCourses" resultType="courseBusiness" parameterType="Integer">
+  		select t2.*,t1.mark from selectedcourse t1 inner join course t2 
+  			on t1.courseid = t2.courseid where studentid = #{studentId} 
+  				and mark is not null
+  </select>
+  
+  <select id="checkStudentPassword" resultType="String" parameterType="Integer">
+  		select loginpassword from studentlogin where loginid = #{loginId}
+  </select>
+  
+  <update id="updateStudentPassword" parameterType="studentLogin">
+  		update studentlogin set loginpassword = #{loginPassword} where loginid = #{loginId}
+  </update>
+  
+</mapper>

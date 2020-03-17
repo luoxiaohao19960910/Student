@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxh.dao.AdminDao">
+
+  <select id="manageCoursesCount" resultType="Integer">
+  		select count(*) from course
+  </select>
+  
+  <select id="manageCourses" resultType="course" parameterType="pageInfo">
+  		select * from course limit #{startIndex},#{limit}
+  </select>
+ 
+  <select id="checkDeleteCourse" resultType="Integer" parameterType="Integer">
+  		select count(*) from selectedcourse where courseid  = #{courseId}
+  </select>
+ 
+  <delete id="deleteCourses" parameterType="Integer">
+  		delete from course where courseid  = #{courseId}
+  </delete>
+    
+  <update id="updateCourses" parameterType="course">
+  		update course set teacherid=#{teacherId},coursetime=#{courseTime},courseroom=#{courseRoom},
+  			courseweek=#{courseWeek},score=#{score} where courseid = #{courseId}
+  </update>
+
+  <insert id="addCourses" parameterType="course">
+  		insert into course values(#{courseId},#{courseName},#{teacherId},#{courseTime},
+  			#{courseRoom},#{courseWeek},#{score})
+  </insert>
+
+  <select id="manageStudentsCount" resultType="Integer">
+  		select count(*) from student
+  </select>
+  
+  <select id="manageStudents" resultType="student" parameterType="pageInfo">
+  		select * from student limit #{startIndex},#{limit}
+  </select>
+  
+  <select id="checkDeleteStudent" resultType="Integer" parameterType="Integer">
+  		select count(*) from studentlogin where loginid  = #{loginId}
+  </select>
+
+  <delete id="deleteStudents" parameterType="Integer">
+  		delete from student where studentid  = #{studentId}
+  </delete>
+  
+  <update id="updateStudents" parameterType="student">
+  		update student set studentsex=#{studentSex},studentbirth=#{studentBirth},
+  			classid=#{classId} where studentid = #{studentId}
+  </update>
+
+  <insert id="addStudents" parameterType="student">
+  		insert into student values(#{studentId},#{studentName},#{studentSex},
+  			#{studentBirth},#{classId})
+  </insert>
+
+  <select id="manageTeachersCount" resultType="Integer">
+  		select count(*) from teacher
+  </select>
+  
+  <select id="manageTeachers" resultType="teacher" parameterType="pageInfo">
+  		select * from teacher limit #{startIndex},#{limit}
+  </select>
+  
+  <select id="checkDeleteTeacher" resultType="Integer" parameterType="Integer">
+  		select count(*) from teacherlogin where loginid  = #{loginId}
+  </select>
+
+  <delete id="deleteTeachers" parameterType="Integer">
+  		delete from teacher where teacherid  = #{teacherId}
+  </delete>
+  
+  <update id="updateTeachers" parameterType="teacher">
+  		update teacher set teachersex=#{teacherSex},title=#{title},
+  			classid=#{classId} where teacherid = #{teacherId}
+  </update>
+
+  <insert id="addTeachers" parameterType="teacher">
+  		insert into teacher values(#{teacherId},#{teacherName},#{teacherSex},
+  			#{title},#{classId})
+  </insert>
+
+  <update id="resetStudentPassword" parameterType="studentLogin">
+  		update studentlogin set loginpassword = #{loginPassword} where loginid = #{loginId}
+  </update>
+  
+  <update id="resetTeacherPassword" parameterType="teacherLogin">
+  		update teacherlogin set loginpassword = #{loginPassword} where loginid = #{loginId}
+  </update>
+  
+  <update id="resetAdminPassword" parameterType="adminLogin">
+  		update adminlogin set loginpassword = #{loginPassword} where loginid = #{loginId}
+  </update>
+ 
+  <select id="checkAdminPassword" resultType="String" parameterType="Integer">
+  		select loginpassword from adminlogin where loginid = #{loginId}
+  </select>
+  
+  <update id="updateAdminPassword" parameterType="adminLogin">
+  		update adminlogin set loginpassword = #{loginPassword} where loginid = #{loginId}
+  </update>
+
+</mapper>

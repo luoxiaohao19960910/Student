@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxh.dao.LoginDao">
+
+  <select id="checkStudentLogin" resultType="Integer" parameterType="studentLogin">
+  		select count(*) from studentlogin where loginid = #{loginId}
+  			and loginpassword = #{loginPassword}
+  </select>
+  
+  <select id="checkTeacherLogin" resultType="Integer" parameterType="teacherLogin">
+  		select count(*) from teacherlogin where loginid = #{loginId}
+  			and loginpassword = #{loginPassword}
+  </select>
+  
+  <select id="checkAdminLogin" resultType="Integer" parameterType="adminLogin">
+  		select count(*) from adminlogin where loginid = #{loginId}
+  			and loginpassword = #{loginPassword}
+  </select>
+  
+</mapper>
